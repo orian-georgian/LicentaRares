@@ -11,3 +11,5 @@ E:\Documents\Projects\License\License\bin\Debug\NHibernate.xml
 E:\Documents\Projects\License\License\bin\Debug\System.Collections.Immutable.xml
 E:\Documents\Projects\License\License\obj\Debug\License.exe
 E:\Documents\Projects\License\License\obj\Debug\License.pdb
+E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.exe
+E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.pdb
