@@ -1,0 +1,13 @@
+E:\Documents\Projects\License\License\bin\Debug\License.dll
+E:\Documents\Projects\License\License\bin\Debug\License.pdb
+E:\Documents\Projects\License\License\bin\Debug\FluentNHibernate.dll
+E:\Documents\Projects\License\License\bin\Debug\Iesi.Collections.dll
+E:\Documents\Projects\License\License\bin\Debug\NHibernate.dll
+E:\Documents\Projects\License\License\bin\Debug\FluentNHibernate.pdb
+E:\Documents\Projects\License\License\bin\Debug\FluentNHibernate.xml
+E:\Documents\Projects\License\License\bin\Debug\Iesi.Collections.xml
+E:\Documents\Projects\License\License\bin\Debug\NHibernate.xml
+E:\Documents\Projects\License\License\obj\Debug\License.dll
+E:\Documents\Projects\License\License\obj\Debug\License.pdb
+E:\Documents\Projects\License\License\bin\Debug\System.Collections.Immutable.dll
+E:\Documents\Projects\License\License\bin\Debug\System.Collections.Immutable.xml
