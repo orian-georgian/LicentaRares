@@ -17,7 +17,8 @@ namespace License.Model
         public virtual IList<Projects> Projects { get; set; }
         public virtual IList<Publications> Publications { get; set; }
 
-        public Members(string fullName, string role, string function, string page, string email, string password, string authRole, string authToken)
+        public Members(string fullName, string role, string function, string page, string email, string password, string authRole, string authToken,
+            List<Lectures> lectures, List<Projects> projects, List<Publications> publications)
         {
             this.FullName = fullName;
             this.Role = role;
@@ -27,9 +28,9 @@ namespace License.Model
             this.Password = password;
             this.AuthRole = AuthRole;
             this.AuthToken = authToken;
-            this.Lectures = new List<Lectures>();
-            this.Projects = new List<Projects>();
-            this.Publications = new List<Publications>();
+            this.Lectures = lectures;
+            this.Projects = projects;
+            this.Publications = publications;
         }
 
         public Members()
