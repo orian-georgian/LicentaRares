@@ -14,6 +14,10 @@ namespace License.Endpoint
         public MemberModule()
             : base("/member")
         {
+            After.AddItemToEndOfPipeline((ctx) => ctx.Response
+               .WithHeader("Access-Control-Allow-Methods", "POST,GET")
+               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With"));
+
             Get["/ping"] = parameters => Response.AsText("pong");
 
             Get["/"] = parameters =>
@@ -22,6 +26,16 @@ namespace License.Endpoint
 
                 return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented);
             };
+
+            Post["/new"] = parameters =>
+                {
+                    string content = Request.Body.ReadAsString();
+
+                    var member = JsonConvert.DeserializeObject<Members>(content);
+
+                    AddMember(member);
+                    return HttpStatusCode.Accepted;
+                };
         }
 
         private IEnumerable<Members> GetMembers()
@@ -35,6 +49,19 @@ namespace License.Endpoint
                             .List<Members>();
 
                     return members;
+                }
+            }
+        }
+
+        private void AddMember(Members member)
+        {
+            using (var session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Save(member);
+
+                    transaction.Commit();
                 }
             }
         }
