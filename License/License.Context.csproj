@@ -64,12 +64,10 @@
     <Compile Include="Mapping\MembersMap.cs" />
     <Compile Include="Mapping\ProjectsMap.cs" />
     <Compile Include="Mapping\PublicationsMap.cs" />
-    <Compile Include="Mapping\UsersMap.cs" />
     <Compile Include="Model\Lectures.cs" />
     <Compile Include="Model\Members.cs" />
     <Compile Include="Model\Projects.cs" />
     <Compile Include="Model\Publications.cs" />
-    <Compile Include="Model\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
