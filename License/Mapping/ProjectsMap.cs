@@ -8,11 +8,11 @@ namespace License.Mapping
         public ProjectsMap()
         {
             Id(x => x.Id);
-            Map(x => x.Title);
-            Map(x => x.Coordinators);
-            Map(x => x.Description);
-            Map(x => x.StartDate);
-            Map(x => x.EndDate);
+            //Map(x => x.Title);
+            //Map(x => x.CoordinatorsIds);
+            //Map(x => x.Description);
+            //Map(x => x.StartDate);
+            //Map(x => x.EndDate);
         }
     }
 }

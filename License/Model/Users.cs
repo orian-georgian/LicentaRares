@@ -6,7 +6,7 @@ namespace License.Model
         public virtual int Id { get; set; }
         public virtual string UserName { get; set; }
         public virtual string Password { get; set; }
-        public virtual Members Members { get; set; }
+        public virtual int MemberId { get; set; }
         public virtual string Role { get; set; }
         public virtual string AuthToken { get; set; }
 

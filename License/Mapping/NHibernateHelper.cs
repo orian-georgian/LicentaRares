@@ -14,15 +14,15 @@ namespace License.Mapping
         public static ISession OpenSession()
         {
             ISessionFactory sessionFactory = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2008
+                .Database(MsSqlConfiguration.MsSql2012
                   .ConnectionString(@"Data Source=ANDREEA-PC;Initial Catalog=University;Integrated Security=True")
                               .ShowSql()
                 )
                .Mappings(m =>
                           m.FluentMappings
                               .AddFromAssemblyOf<Members>())
-                .ExposeConfiguration(cfg => new SchemaExport(cfg)
-                                                .Create(false, false))
+                .ExposeConfiguration(cfg => new SchemaUpdate(cfg)
+                                                .Execute(false, true))
                 .BuildSessionFactory();
             return sessionFactory.OpenSession();
         }
