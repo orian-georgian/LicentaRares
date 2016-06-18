@@ -13,3 +13,15 @@ E:\Documents\Projects\License\License\obj\Debug\License.exe
 E:\Documents\Projects\License\License\obj\Debug\License.pdb
 E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.exe
 E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.pdb
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\License.exe
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\License.pdb
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\FluentNHibernate.dll
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\Iesi.Collections.dll
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\NHibernate.dll
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\System.Collections.Immutable.dll
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\FluentNHibernate.pdb
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\FluentNHibernate.xml
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\Iesi.Collections.xml
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\NHibernate.xml
+E:\Documents\ProjectX\LicentaRares\License\bin\Debug\System.Collections.Immutable.xml
+E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.Context.csprojResolveAssemblyReference.cache

@@ -58,13 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\LecturesMap.cs" />
     <Compile Include="Mapping\NHibernateHelper.cs" />
     <Compile Include="Mapping\MembersMap.cs" />
-    <Compile Include="Model\Lecture.cs" />
-    <Compile Include="Mapping\Members.cs" />
-    <Compile Include="Model\Project.cs" />
-    <Compile Include="Model\Publication.cs" />
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Mapping\ProjectsMap.cs" />
+    <Compile Include="Mapping\PublicationsMap.cs" />
+    <Compile Include="Mapping\UsersMap.cs" />
+    <Compile Include="Model\Lectures.cs" />
+    <Compile Include="Model\Members.cs" />
+    <Compile Include="Model\Projects.cs" />
+    <Compile Include="Model\Publications.cs" />
+    <Compile Include="Model\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using License.Mapping;
-using License.Mapping;
+using License.Model;
 using Nancy;
 using Newtonsoft.Json;
 using NHibernate;

@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
+using License.Model;
 
 namespace License.Mapping
 {
