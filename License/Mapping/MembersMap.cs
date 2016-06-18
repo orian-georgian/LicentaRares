@@ -16,7 +16,7 @@ namespace License.Mapping
             Map(x => x.Password);
             Map(x => x.AuthRole);
             Map(x => x.AuthToken);
-            HasMany<Lectures>(x => x.Lectures).Inverse().AsBag();
+            HasMany<Lectures>(x => x.Lectures).Inverse().Cascade.All();
             HasManyToMany<Projects>(x => x.Projects)
                 .Cascade.All()
                 .Table("MembersProjects");

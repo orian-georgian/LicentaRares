@@ -27,7 +27,10 @@ namespace License.Endpoint
                 {
                     var members = MembersCrud.ListAll(session).ToImmutableArray();
 
-                    return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented);
+                    return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented, new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
                 };
             Get["/{Id}"] = parameters =>
                 {
@@ -35,7 +38,10 @@ namespace License.Endpoint
 
                     var member = MembersCrud.Get(id, session);
 
-                    return JsonConvert.SerializeObject(member, Formatting.Indented);
+                    return JsonConvert.SerializeObject(member, Formatting.Indented, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
                 };
 
             Post["/new"] = parameters =>
