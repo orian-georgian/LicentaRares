@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crud\MembersCrud.cs" />
     <Compile Include="Mapping\LecturesMap.cs" />
     <Compile Include="Mapping\NHibernateHelper.cs" />
     <Compile Include="Mapping\MembersMap.cs" />

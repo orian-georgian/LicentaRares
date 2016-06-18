@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using License.Mapping;
+﻿using System.Collections.Immutable;
+using License.Crud;
 using License.Model;
 using Nancy;
 using Newtonsoft.Json;
-using NHibernate;
 
 namespace License.Endpoint
 {
@@ -21,11 +18,19 @@ namespace License.Endpoint
             Get["/ping"] = parameters => Response.AsText("pong");
 
             Get["/"] = parameters =>
-            {
-                var members = GetMembers().ToImmutableArray();
+                {
+                    var members = MembersCrud.ListAll().ToImmutableArray();
 
-                return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented);
-            };
+                    return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented);
+                };
+            Get["/{Id}"] = parameters =>
+                {
+                    var id = (int)parameters.Id;
+
+                    var member = MembersCrud.Get(id);
+
+                    return JsonConvert.SerializeObject(member, Formatting.Indented);
+                };
 
             Post["/new"] = parameters =>
                 {
@@ -33,37 +38,21 @@ namespace License.Endpoint
 
                     var member = JsonConvert.DeserializeObject<Members>(content);
 
-                    AddMember(member);
+                    MembersCrud.Save(member);
+
                     return HttpStatusCode.Accepted;
                 };
-        }
 
-        private IEnumerable<Members> GetMembers()
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
+            Post["/delete"] = parameters =>
                 {
-                    IList<Members> members = session
-                            .CreateCriteria(typeof(Members))
-                            .List<Members>();
+                    string content = Request.Body.ReadAsString();
 
-                    return members;
-                }
-            }
-        }
+                    var member = JsonConvert.DeserializeObject<Members>(content);
 
-        private void AddMember(Members member)
-        {
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.Save(member);
+                    MembersCrud.Delete(member);
 
-                    transaction.Commit();
-                }
-            }
+                    return HttpStatusCode.Accepted;
+                };
         }
     }
 }
