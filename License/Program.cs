@@ -18,7 +18,12 @@ namespace License
                              .CreateCriteria(typeof(Members))
                              .List<Members>();
 
-                    Console.Write(members);
+                    //foreach (var m in members)
+                    //{
+                    //    Console.WriteLine(m.FullName);
+                    //   // Console.WriteLine(m.User.UserName);
+                    //}
+
                     Console.ReadKey();
 
                     tx.Commit();

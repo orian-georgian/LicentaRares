@@ -10,9 +10,9 @@ namespace License.Mapping
             Id(x => x.Id);
             Map(x => x.UserName);
             Map(x => x.Password);
-            Map(x => x.MemberId);
             Map(x => x.Role);
             Map(x => x.AuthToken);
+            References(x => x.Member).Unique().Cascade.All();
         }
     }
 }

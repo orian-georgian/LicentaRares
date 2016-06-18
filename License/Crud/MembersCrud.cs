@@ -9,10 +9,8 @@ namespace License.Crud
 {
     public class MembersCrud
     {
-        public static Members Get(int id)
+        public static Members Get(int id, ISession session)
         {
-            using (var session = NHibernateHelper.OpenSession())
-            {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
                     var member = session.Get<Members>(id);
@@ -20,55 +18,48 @@ namespace License.Crud
                     transaction.Commit();
                     return member;
                 }
-            }
-        }
+                    }
 
-        public static void Save(Members member)
+        public static void Save(Members member, ISession session)
         {
             if (member == null)
             {
                 throw new ArgumentNullException("member must not be null!");
             }
-            using (var session = NHibernateHelper.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
+                            using (ITransaction transaction = session.BeginTransaction())
                 {
                     session.SaveOrUpdate(member);
 
                     transaction.Commit();
                 }
-            }
+            
         }
 
-        public static void Delete(Members member)
+        public static void Delete(Members member, ISession session)
         {
             if (member == null)
             {
                 throw new ArgumentNullException("member must not be null!");
             }
-            using (var session = NHibernateHelper.OpenSession())
-            {
+            
                 using (ITransaction transaction = session.BeginTransaction())
                 {
                     session.Delete(member);
 
                     transaction.Commit();
                 }
-            }
+            
         }
 
-        public static IEnumerable<Members> ListAll()
+        public static IEnumerable<Members> ListAll(ISession session)
         {
-            using (var session = NHibernateHelper.OpenSession())
+            using (ITransaction transaction = session.BeginTransaction())
             {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    IList<Members> members = session
-                            .CreateCriteria(typeof(Members))
-                            .List<Members>();
+                IList<Members> members = session
+                        .CreateCriteria(typeof(Members))
+                        .List<Members>();
 
-                    return members;
-                }
+                return members;
             }
         }
     }
