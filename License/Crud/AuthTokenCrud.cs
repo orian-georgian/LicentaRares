@@ -18,11 +18,11 @@ namespace License.Crud
             return result;
         }
 
-        public static void InsertToken(Members member, string token, ISession session)
+        public static void InsertToken(User user, string token, ISession session)
         {
-            member.AuthToken = token;
+            user.AuthToken = token;
 
-            MembersCrud.Save(member, session);
+            UserCrud.Save(user, session);
         }
 
         public bool CheckToken(string token, ISession session)
@@ -38,12 +38,12 @@ namespace License.Crud
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                var authentifiedMembers = session.CreateSQLQuery("SELECT COUNT(*) FROM [University].[dbo].[Members] Where AuthToken = :token")
+                var authentifiedUsers = session.CreateSQLQuery("SELECT COUNT(*) FROM [University].[dbo].[Users] Where AuthToken = :token")
                                     .SetParameter("token", token)
                                     .ToString();
 
                 transaction.Commit();
-                return Convert.ToInt32(authentifiedMembers);
+                return Convert.ToInt32(authentifiedUsers);
             }
         }
     }

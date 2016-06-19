@@ -3,16 +3,17 @@ using License.Model;
 
 namespace License.Mapping
 {
-    public class ProjectsMap : ClassMap<Projects>
+    public class ProjectMap : ClassMap<Project>
     {
-        public ProjectsMap()
+        public ProjectMap()
         {
+            Table("Projects");
             Id(x => x.Id);
             Map(x => x.Title);
             Map(x => x.Description);
             Map(x => x.StartDate);
             Map(x => x.EndDate);
-            HasManyToMany<Members>(x => x.Coordinators)
+            HasManyToMany<Member>(x => x.Coordinators)
                            .Cascade.All()
                            .Inverse()
                            .Table("MembersProjects");

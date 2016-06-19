@@ -3,15 +3,16 @@ using License.Model;
 
 namespace License.Mapping
 {
-    public class LecturesMap : ClassMap<Lectures>
+    public class LectureMap : ClassMap<Lecture>
     {
-        public LecturesMap()
+        public LectureMap()
         {
+            Table("Lectures");
             Id(x => x.Id);
             Map(x => x.Name);
             Map(x => x.Line);
             Map(x => x.Laboratory);
-            References<Members>(x => x.Teacher);
+            References<Member>(x => x.Teacher);
         }
     }
 }

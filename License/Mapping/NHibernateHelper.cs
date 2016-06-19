@@ -20,7 +20,7 @@ namespace License.Mapping
                 )
                .Mappings(m =>
                           m.FluentMappings
-                              .AddFromAssemblyOf<Members>())
+                              .AddFromAssemblyOf<Member>())
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg)
                                                 .Execute(false, true))
                 .BuildSessionFactory();

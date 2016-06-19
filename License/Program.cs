@@ -14,9 +14,9 @@ namespace License
             {
                 using (var tx = session.BeginTransaction())
                 {
-                    IList<Members> members = session
-                             .CreateCriteria(typeof(Members))
-                             .List<Members>();
+                    IList<Member> members = session
+                             .CreateCriteria(typeof(Member))
+                             .List<Member>();
 
                     //foreach (var m in members)
                     //{

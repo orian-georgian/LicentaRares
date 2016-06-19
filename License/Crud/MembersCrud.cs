@@ -9,32 +9,32 @@ namespace License.Crud
 {
     public class MembersCrud
     {
-        public static Members Get(int id, ISession session)
+        public static Member Get(int id, ISession session)
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                var member = session.Get<Members>(id);
+                var member = session.Get<Member>(id);
 
                 transaction.Commit();
                 return member;
             }
         }
 
-        public static Members Get(string email, ISession session)
+        public static Member Get(string email, ISession session)
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
                 var members = session.CreateSQLQuery("SELECT * FROM [University].[dbo].[Members] Where Email = :email")
                                     .SetParameter("email", email)
-                                    .SetResultTransformer(Transformers.AliasToBean(typeof(Members)))
-                                    .List<Members>();
+                                    .SetResultTransformer(Transformers.AliasToBean(typeof(Member)))
+                                    .List<Member>();
 
                 transaction.Commit();
                 return members.Count == 0 ? null : members[0];
             }
         }
 
-        public static void Save(Members member, ISession session)
+        public static void Save(Member member, ISession session)
         {
             if (member == null)
             {
@@ -49,7 +49,7 @@ namespace License.Crud
 
         }
 
-        public static void Delete(Members member, ISession session)
+        public static void Delete(Member member, ISession session)
         {
             if (member == null)
             {
@@ -65,13 +65,13 @@ namespace License.Crud
 
         }
 
-        public static IEnumerable<Members> ListAll(ISession session)
+        public static IEnumerable<Member> ListAll(ISession session)
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                IList<Members> members = session
-                        .CreateCriteria(typeof(Members))
-                        .List<Members>();
+                IList<Member> members = session
+                        .CreateCriteria(typeof(Member))
+                        .List<Member>();
 
                 return members;
             }

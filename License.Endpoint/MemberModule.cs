@@ -48,7 +48,7 @@ namespace License.Endpoint
                 {
                     string content = Request.Body.ReadAsString();
 
-                    var member = JsonConvert.DeserializeObject<Members>(content);
+                    var member = JsonConvert.DeserializeObject<Member>(content);
 
                     MembersCrud.Save(member, session);
 
@@ -59,7 +59,7 @@ namespace License.Endpoint
                 {
                     string content = Request.Body.ReadAsString();
 
-                    var member = JsonConvert.DeserializeObject<Members>(content);
+                    var member = JsonConvert.DeserializeObject<Member>(content);
 
                     MembersCrud.Delete(member, session);
 

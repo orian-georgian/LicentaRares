@@ -64,15 +64,18 @@
   <ItemGroup>
     <Compile Include="Crud\AuthTokenCrud.cs" />
     <Compile Include="Crud\MembersCrud.cs" />
-    <Compile Include="Mapping\LecturesMap.cs" />
+    <Compile Include="Crud\UserCrud.cs" />
+    <Compile Include="Mapping\LectureMap.cs" />
     <Compile Include="Mapping\NHibernateHelper.cs" />
-    <Compile Include="Mapping\MembersMap.cs" />
-    <Compile Include="Mapping\ProjectsMap.cs" />
-    <Compile Include="Mapping\PublicationsMap.cs" />
-    <Compile Include="Model\Lectures.cs" />
-    <Compile Include="Model\Members.cs" />
-    <Compile Include="Model\Projects.cs" />
-    <Compile Include="Model\Publications.cs" />
+    <Compile Include="Mapping\MemberMap.cs" />
+    <Compile Include="Mapping\ProjectMap.cs" />
+    <Compile Include="Mapping\PublicationMap.cs" />
+    <Compile Include="Mapping\UserMap.cs" />
+    <Compile Include="Model\Lecture.cs" />
+    <Compile Include="Model\Member.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\Publication.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
