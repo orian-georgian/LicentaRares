@@ -2,6 +2,7 @@
 using System.Linq;
 using License.Model;
 using NHibernate;
+using NHibernate.Transform;
 
 namespace License.Crud
 {
@@ -38,12 +39,13 @@ namespace License.Crud
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                var authentifiedUsers = session.CreateSQLQuery("SELECT COUNT(*) FROM [University].[dbo].[Users] Where AuthToken = :token")
+                var authentifiedUsers= session.CreateSQLQuery("SELECT * FROM [University].[dbo].[Users] Where AuthToken = :token")
                                     .SetParameter("token", token)
-                                    .ToString();
+                                    .SetResultTransformer(Transformers.AliasToBean(typeof(User)))
+                                    .List<User>();
 
                 transaction.Commit();
-                return Convert.ToInt32(authentifiedUsers);
+                return authentifiedUsers.Count;
             }
         }
     }

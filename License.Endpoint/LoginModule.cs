@@ -34,7 +34,7 @@ namespace License.Endpoint
 
                     AuthTokenCrud.InsertToken(user, token, session);
 
-                    return Response.AsText(token);
+                    return JsonConvert.SerializeObject(user, Formatting.Indented);
                 };
 
             Post["/logout/"] = p =>

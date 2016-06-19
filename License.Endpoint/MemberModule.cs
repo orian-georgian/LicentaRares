@@ -28,7 +28,7 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (AuthTokenCrud.CheckToken(token, session))
+                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
                     {
                         var members = MembersCrud.ListAll(session).ToImmutableArray();
 
@@ -38,41 +38,59 @@ namespace License.Endpoint
                         });
                     }
                     return HttpStatusCode.Unauthorized;
-
-
                 };
+
             Get["/{Id}"] = parameters =>
                 {
-                    var id = (int)parameters.Id;
+                    var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    var member = MembersCrud.Get(id, session);
-
-                    return JsonConvert.SerializeObject(member, Formatting.Indented, new JsonSerializerSettings()
+                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
                     {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
+                        var id = (int)parameters.Id;
+
+                        var member = MembersCrud.Get(id, session);
+
+                        return JsonConvert.SerializeObject(member, Formatting.Indented, new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
+                    }
+                    return HttpStatusCode.Unauthorized;
                 };
 
             Post["/new"] = parameters =>
                 {
-                    string content = Request.Body.ReadAsString();
+                    var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    var member = JsonConvert.DeserializeObject<Member>(content);
+                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    {
+                        string content = Request.Body.ReadAsString();
 
-                    MembersCrud.Save(member, session);
+                        var member = JsonConvert.DeserializeObject<Member>(content);
 
-                    return HttpStatusCode.Accepted;
+                        MembersCrud.Save(member, session);
+
+                        return HttpStatusCode.Accepted;
+                    }
+                    return HttpStatusCode.Unauthorized;
                 };
 
             Post["/delete"] = parameters =>
                 {
-                    string content = Request.Body.ReadAsString();
+                    var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    var member = JsonConvert.DeserializeObject<Member>(content);
+                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    {
 
-                    MembersCrud.Delete(member, session);
+                        string content = Request.Body.ReadAsString();
 
-                    return HttpStatusCode.Accepted;
+                        var member = JsonConvert.DeserializeObject<Member>(content);
+
+                        MembersCrud.Delete(member, session);
+
+                        return HttpStatusCode.Accepted;
+                    }
+                    return HttpStatusCode.Unauthorized;
                 };
         }
     }
