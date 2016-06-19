@@ -15,7 +15,7 @@ namespace License.Endpoint
             session = NHibernateHelper.OpenSession();
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
                .WithHeader("Access-Control-Allow-Methods", "POST,GET")
-               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With, X-user-Token"));
+               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With, X-User-Token"));
 
             Post["/login"] = p =>
                 {

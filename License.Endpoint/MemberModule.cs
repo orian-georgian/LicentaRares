@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using License.Crud;
 using License.Mapping;
 using License.Model;
@@ -19,18 +20,26 @@ namespace License.Endpoint
 
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
                .WithHeader("Access-Control-Allow-Methods", "POST,GET")
-               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With,X-Member-Token"));
+               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With,X-User-Token"));
 
             Get["/ping"] = parameters => Response.AsText("pong");
 
             Get["/"] = parameters =>
                 {
-                    var members = MembersCrud.ListAll(session).ToImmutableArray();
+                    var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented, new JsonSerializerSettings()
+                    if (AuthTokenCrud.CheckToken(token, session))
+                    {
+                        var members = MembersCrud.ListAll(session).ToImmutableArray();
+
+                        return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented, new JsonSerializerSettings()
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                         });
+                    }
+                    return HttpStatusCode.Unauthorized;
+
+
                 };
             Get["/{Id}"] = parameters =>
                 {

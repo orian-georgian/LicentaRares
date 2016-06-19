@@ -25,7 +25,7 @@ namespace License.Crud
             UserCrud.Save(user, session);
         }
 
-        public bool CheckToken(string token, ISession session)
+        public static bool CheckToken(string token, ISession session)
         {
             if (FindToken(token, session) != 0)
             {
