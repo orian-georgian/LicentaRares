@@ -41,15 +41,15 @@ namespace License.Endpoint
                     return HttpStatusCode.Unauthorized;
                 };
 
-            Get["/{Id}"] = parameters =>
+            Get["/"] = parameters =>
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
                     if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                     {
-                        var id = (int)parameters.Id;
+                        var email = (string)this.Request.Query.Email;
 
-                        var member = MembersCrud.Get(id, session);
+                        var member = MembersCrud.Get(email, session);
 
                         return JsonConvert.SerializeObject(member, Formatting.Indented, new JsonSerializerSettings()
                         {
@@ -70,6 +70,7 @@ namespace License.Endpoint
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
                         MembersCrud.Save(member, session);
+
 
                         var user = AuthentificationLogic.CreateUser(member);
                         UserCrud.Save(user, session);
