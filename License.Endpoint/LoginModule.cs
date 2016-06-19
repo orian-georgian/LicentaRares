@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using License.Crud;
-using License;
 using License.Mapping;
 using Nancy;
 using Newtonsoft.Json;
@@ -43,7 +42,7 @@ namespace License.Endpoint
 
                     if (user == null || user.Password != model.Password)
                     {
-                        return Response.AsText("Username sau parola incorecte!").WithStatusCode(HttpStatusCode.NotFound);
+                        return Response.AsText("Incorrect username or password!").WithStatusCode(HttpStatusCode.NotFound);
                     }
 
                     var token = AuthToken.SetToken();
@@ -65,6 +64,31 @@ namespace License.Endpoint
                     return HttpStatusCode.Accepted;
                 }
 
+                return HttpStatusCode.Unauthorized;
+            };
+
+            Post["/password/change"] = p =>
+            {
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
+
+                if (token != "null" && AuthToken.CheckToken(token, session))
+                {
+                    var content = Request.Body.ReadAsString();
+
+                    var model = JsonConvert.DeserializeObject<LoginModel>(content);
+
+                    var user = UserCrud.Get(model.Email, session);
+
+                    if (user.Password != model.Password)
+                    {
+                        user.Password = model.Password;
+                        UserCrud.Save(user, session);
+
+                        return HttpStatusCode.OK;
+                    }
+
+                    return Response.AsText("New password must be different from old password!");
+                }
                 return HttpStatusCode.Unauthorized;
             };
         }
