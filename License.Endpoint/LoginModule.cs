@@ -54,13 +54,17 @@ namespace License.Endpoint
 
             Post["/logout/"] = p =>
             {
-                var email = Request.Body.ReadAsString().Trim();
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                var user = UserCrud.Get(email, session);
+                if (token != "null" && AuthTokenCrud.CheckToken(token, session))
+                {
+                    var user = AuthTokenCrud.FindToken(token, session);
+                    AuthTokenCrud.InsertToken(user, string.Empty, session);
 
-                AuthTokenCrud.InsertToken(user, string.Empty, session);
+                    return HttpStatusCode.Accepted;
+                }
 
-                return HttpStatusCode.Accepted;
+                return HttpStatusCode.Unauthorized;
             };
         }
 
