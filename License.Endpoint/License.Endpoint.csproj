@@ -67,6 +67,7 @@
     <Compile Include="RequestBodyExtensions.cs" />
     <Compile Include="MemberModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmtpService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

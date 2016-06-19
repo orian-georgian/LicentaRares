@@ -73,6 +73,8 @@ namespace License.Endpoint
                         var user = CreateUser(member);
                         UserCrud.Save(user, session);
 
+                        SendNotificationEmail(user);
+
                         return HttpStatusCode.Accepted;
                     }
                     return HttpStatusCode.Unauthorized;
@@ -136,6 +138,18 @@ namespace License.Endpoint
                           .Select(s => s[random.Next(s.Length)])
                           .ToArray());
             return result;
+        }
+
+        private static void SendNotificationEmail(User user)
+        {
+            var toAddress = user.Email;
+            var mailSubject = "User password for localhost site";
+            var mailBody = "Your account information is: \n Email: "
+                + user.Email + " \nPassword: "
+                + user.Password
+                + " \n Please log in and change your password!";
+
+            SmtpService.SendEmail(toAddress, mailSubject, mailBody);
         }
     }
 }
