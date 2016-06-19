@@ -28,24 +28,24 @@ namespace License.Crud
 
         public static bool CheckToken(string token, ISession session)
         {
-            if (FindToken(token, session) != 0)
+            if (FindToken(token, session) != null)
             {
                 return true;
             }
             return false;
         }
 
-        private static int FindToken(string token, ISession session)
+        public static User FindToken(string token, ISession session)
         {
             using (ITransaction transaction = session.BeginTransaction())
             {
-                var authentifiedUsers= session.CreateSQLQuery("SELECT * FROM [University].[dbo].[Users] Where AuthToken = :token")
+                var authentifiedUsers = session.CreateSQLQuery("SELECT * FROM [University].[dbo].[Users] Where AuthToken = :token")
                                     .SetParameter("token", token)
                                     .SetResultTransformer(Transformers.AliasToBean(typeof(User)))
                                     .List<User>();
 
                 transaction.Commit();
-                return authentifiedUsers.Count;
+                return authentifiedUsers.Count == 0 ? null : authentifiedUsers[0];
             }
         }
     }

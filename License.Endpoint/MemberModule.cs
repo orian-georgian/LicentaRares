@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using License.Crud;
 using License.Mapping;
@@ -67,13 +68,32 @@ namespace License.Endpoint
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
-
                         MembersCrud.Save(member, session);
+
+                        var user = CreateUser(member);
+                        UserCrud.Save(user, session);
 
                         return HttpStatusCode.Accepted;
                     }
                     return HttpStatusCode.Unauthorized;
                 };
+
+            Post["/update"] = parameters =>
+            {
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
+
+                if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                {
+                    string content = Request.Body.ReadAsString();
+
+                    var member = JsonConvert.DeserializeObject<Member>(content);
+
+                    MembersCrud.Save(member, session);
+
+                    return HttpStatusCode.Accepted;
+                }
+                return HttpStatusCode.Unauthorized;
+            };
 
             Post["/delete"] = parameters =>
                 {
@@ -92,6 +112,30 @@ namespace License.Endpoint
                     }
                     return HttpStatusCode.Unauthorized;
                 };
+        }
+
+        private static User CreateUser(Member member)
+        {
+            var user = new User();
+
+            user.Email = member.Email;
+            user.Password = CreatePassword();
+            user.Name = member.FullName;
+            user.AuthRole = "Member";
+            user.AuthToken = string.Empty;
+
+            return user;
+        }
+
+        private static string CreatePassword()
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, 8)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+            return result;
         }
     }
 }

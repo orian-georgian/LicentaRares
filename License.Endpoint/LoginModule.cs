@@ -1,4 +1,5 @@
-﻿using License.Crud;
+﻿using System.Linq;
+using License.Crud;
 using License.Mapping;
 using Nancy;
 using Newtonsoft.Json;
@@ -16,6 +17,20 @@ namespace License.Endpoint
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
                .WithHeader("Access-Control-Allow-Methods", "POST,GET")
                .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With, X-User-Token"));
+
+            Get["/login"] = p =>
+            {
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
+
+                if (token != "null" && AuthTokenCrud.CheckToken(token, session))
+                {
+                    var user = AuthTokenCrud.FindToken(token, session);
+
+                    return JsonConvert.SerializeObject(user, Formatting.Indented);
+                }
+
+                return HttpStatusCode.Unauthorized;
+            };
 
             Post["/login"] = p =>
                 {
