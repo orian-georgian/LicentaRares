@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using License.Crud;
 using License.Mapping;
@@ -29,7 +28,7 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                     {
                         var members = MembersCrud.ListAll(session).ToImmutableArray();
 
@@ -38,6 +37,7 @@ namespace License.Endpoint
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                         });
                     }
+
                     return HttpStatusCode.Unauthorized;
                 };
 
@@ -45,7 +45,7 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                     {
                         var id = (int)parameters.Id;
 
@@ -56,6 +56,7 @@ namespace License.Endpoint
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                         });
                     }
+
                     return HttpStatusCode.Unauthorized;
                 };
 
@@ -63,20 +64,21 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                     {
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
                         MembersCrud.Save(member, session);
 
-                        var user = CreateUser(member);
+                        var user = AuthentificationLogic.CreateUser(member);
                         UserCrud.Save(user, session);
 
-                        SendNotificationEmail(user);
+                        AuthentificationLogic.SendNotificationEmail(user);
 
                         return HttpStatusCode.Accepted;
                     }
+
                     return HttpStatusCode.Unauthorized;
                 };
 
@@ -84,7 +86,7 @@ namespace License.Endpoint
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                 {
                     string content = Request.Body.ReadAsString();
 
@@ -94,6 +96,7 @@ namespace License.Endpoint
 
                     return HttpStatusCode.Accepted;
                 }
+
                 return HttpStatusCode.Unauthorized;
             };
 
@@ -101,7 +104,7 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthTokenCrud.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                     {
 
                         string content = Request.Body.ReadAsString();
@@ -112,44 +115,9 @@ namespace License.Endpoint
 
                         return HttpStatusCode.Accepted;
                     }
+
                     return HttpStatusCode.Unauthorized;
                 };
-        }
-
-        private static User CreateUser(Member member)
-        {
-            var user = new User();
-
-            user.Email = member.Email;
-            user.Password = CreatePassword();
-            user.Name = member.FullName;
-            user.AuthRole = "Member";
-            user.AuthToken = string.Empty;
-
-            return user;
-        }
-
-        private static string CreatePassword()
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var result = new string(
-                Enumerable.Repeat(chars, 8)
-                          .Select(s => s[random.Next(s.Length)])
-                          .ToArray());
-            return result;
-        }
-
-        private static void SendNotificationEmail(User user)
-        {
-            var toAddress = user.Email;
-            var mailSubject = "User password for localhost site";
-            var mailBody = "Your account information is: \n Email: "
-                + user.Email + " \nPassword: "
-                + user.Password
-                + " \n Please log in and change your password!";
-
-            SmtpService.SendEmail(toAddress, mailSubject, mailBody);
         }
     }
 }

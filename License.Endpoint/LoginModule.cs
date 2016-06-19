@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using License.Crud;
+using License;
 using License.Mapping;
 using Nancy;
 using Newtonsoft.Json;
@@ -22,9 +23,9 @@ namespace License.Endpoint
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                if (token != "null" && AuthTokenCrud.CheckToken(token, session))
+                if (token != "null" && AuthToken.CheckToken(token, session))
                 {
-                    var user = AuthTokenCrud.FindToken(token, session);
+                    var user = AuthToken.FindToken(token, session);
 
                     return JsonConvert.SerializeObject(user, Formatting.Indented);
                 }
@@ -45,9 +46,9 @@ namespace License.Endpoint
                         return Response.AsText("Username sau parola incorecte!").WithStatusCode(HttpStatusCode.NotFound);
                     }
 
-                    var token = AuthTokenCrud.SetToken();
+                    var token = AuthToken.SetToken();
 
-                    AuthTokenCrud.InsertToken(user, token, session);
+                    AuthToken.InsertToken(user, token, session);
 
                     return JsonConvert.SerializeObject(user, Formatting.Indented);
                 };
@@ -56,10 +57,10 @@ namespace License.Endpoint
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                if (token != "null" && AuthTokenCrud.CheckToken(token, session))
+                if (token != "null" && AuthToken.CheckToken(token, session))
                 {
-                    var user = AuthTokenCrud.FindToken(token, session);
-                    AuthTokenCrud.InsertToken(user, string.Empty, session);
+                    var user = AuthToken.FindToken(token, session);
+                    AuthToken.InsertToken(user, string.Empty, session);
 
                     return HttpStatusCode.Accepted;
                 }

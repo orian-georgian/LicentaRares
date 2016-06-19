@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
+using License.Crud;
 using License.Model;
 using NHibernate;
 using NHibernate.Transform;
 
-namespace License.Crud
+namespace License
 {
-    public class AuthTokenCrud
+    public class AuthToken
     {
         public static string SetToken()
         {
