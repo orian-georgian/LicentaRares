@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginModule.cs" />
     <Compile Include="RequestBodyExtensions.cs" />
     <Compile Include="MemberModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

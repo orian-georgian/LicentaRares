@@ -19,7 +19,7 @@ namespace License.Endpoint
 
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
                .WithHeader("Access-Control-Allow-Methods", "POST,GET")
-               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With"));
+               .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type,X-Requested-With,X-Member-Token"));
 
             Get["/ping"] = parameters => Response.AsText("pong");
 

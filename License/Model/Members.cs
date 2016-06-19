@@ -39,5 +39,20 @@ namespace License.Model
             Projects = new List<Projects>();
             Publications = new List<Publications>();
         }
+
+        //public Members MapToMember(object obj)
+        //{
+        //    this.Id = obj.;
+        //    this.FullName = obj[1];
+        //    this.Role = obj[2];
+        //    this.MemberFunction = obj[3];
+        //    this.PersonalPage = obj[4];
+        //    this.Email = obj[5];
+        //    this.Password = obj[6];
+        //    this.AuthRole = obj[7];
+        //    this.AuthToken = obj[9];
+
+        //    return this;
+        //}
     }
 }
