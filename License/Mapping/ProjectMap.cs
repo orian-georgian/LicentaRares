@@ -14,7 +14,6 @@ namespace License.Mapping
             Map(x => x.StartDate);
             Map(x => x.EndDate);
             HasManyToMany<Member>(x => x.Coordinators)
-                           .Cascade.All()
                            .Inverse()
                            .Table("MembersProjects");
         }

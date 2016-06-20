@@ -36,7 +36,7 @@ namespace License.Crud
 
         }
 
-        public static IList<Lecture> GetAllFor(ISession session)
+        public static IList<Lecture> GetAll(ISession session)
         {
             using (ITransaction transaction = session.BeginTransaction())
             {

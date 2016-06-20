@@ -125,14 +125,18 @@ namespace License.Endpoint
         {
             var lectures = member.Lectures;
             member.Lectures = null;
+
             MembersCrud.Save(member, session);
 
-            SaveLectures(lectures, member, session);
+            if (lectures.Count > 0)
+            {
+                SaveLectures(lectures, member, session);
+            }
         }
 
         private static void SaveLectures(IList<Lecture> lectures, Member member, ISession session)
         {
-            var dbLectures = LectureCrud.GetAllFor(session).ToImmutableArray();
+            var dbLectures = LectureCrud.GetAll(session).ToImmutableArray();
 
             foreach (var lecture in dbLectures)
             {

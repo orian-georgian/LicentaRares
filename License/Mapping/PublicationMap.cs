@@ -13,7 +13,6 @@ namespace License.Mapping
             Map(x => x.Description);
             Map(x => x.PublicationDate);
             HasManyToMany<Member>(x => x.Authors)
-                           .Cascade.All()
                            .Inverse()
                            .Table("MembersPublications");
         }
