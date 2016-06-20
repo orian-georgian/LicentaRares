@@ -69,22 +69,27 @@ namespace License.Endpoint
 
             Post["/password/change"] = p =>
             {
-                var content = Request.Body.ReadAsString();
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                var model = JsonConvert.DeserializeObject<LoginModel>(content);
-
-                var user = UserCrud.Get(model.Email, session);
-
-                if (user.Password != model.Password)
+                if (token != "null" && AuthToken.CheckToken(token, session))
                 {
-                    user.Password = model.Password;
-                    UserCrud.Save(user, session);
+                    var content = Request.Body.ReadAsString();
 
-                    return HttpStatusCode.OK;
+                    var model = JsonConvert.DeserializeObject<LoginModel>(content);
+
+                    var user = UserCrud.Get(model.Email, session);
+
+                    if (user.Password != model.Password)
+                    {
+                        user.Password = model.Password;
+                        UserCrud.Save(user, session);
+
+                        return HttpStatusCode.OK;
+                    }
+
+                    return Response.AsText("New password must be different from old password!");
                 }
-
-                return Response.AsText("New password must be different from old password!");
-
+                return HttpStatusCode.Unauthorized;
             };
         }
 
