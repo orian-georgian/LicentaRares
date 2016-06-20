@@ -9,5 +9,10 @@ namespace License.Model
         public virtual string Laboratory { get; set; }
         public virtual string Year { get; set; }
         public virtual Member Teacher { get; set; }
+
+        public Lecture()
+        {
+            Teacher = new Member();
+        }
     }
 }

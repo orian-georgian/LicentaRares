@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using License.Crud;
 using License.Mapping;
@@ -24,7 +25,7 @@ namespace License.Endpoint
 
             Get["/ping"] = parameters => Response.AsText("pong");
 
-            Get["/"] = parameters =>
+            Get["/all"] = parameters =>
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
@@ -69,8 +70,7 @@ namespace License.Endpoint
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
-                        MembersCrud.Save(member, session);
-
+                        SaveOrUpdateMember(member, session);
 
                         var user = AuthentificationLogic.CreateUser(member);
                         UserCrud.Save(user, session);
@@ -93,7 +93,7 @@ namespace License.Endpoint
 
                     var member = JsonConvert.DeserializeObject<Member>(content);
 
-                    MembersCrud.Save(member, session);
+                    SaveOrUpdateMember(member, session);
 
                     return HttpStatusCode.Accepted;
                 }
@@ -119,6 +119,34 @@ namespace License.Endpoint
 
                     return HttpStatusCode.Unauthorized;
                 };
+        }
+
+        private static void SaveOrUpdateMember(Member member, ISession session)
+        {
+            var lectures = member.Lectures;
+            member.Lectures = null;
+            MembersCrud.Save(member, session);
+
+            SaveLectures(lectures, member, session);
+        }
+
+        private static void SaveLectures(IList<Lecture> lectures, Member member, ISession session)
+        {
+            var dbLectures = LectureCrud.GetAllFor(session).ToImmutableArray();
+
+            foreach (var lecture in dbLectures)
+            {
+                if (lecture.Teacher.Id == member.Id)
+                {
+                    LectureCrud.Delete(lecture, session);
+                }
+            }
+
+            foreach (var lecture in lectures)
+            {
+                lecture.Teacher = member;
+                LectureCrud.Save(lecture, session);
+            }
         }
     }
 }

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AuthentificationLogic.cs" />
     <Compile Include="AuthToken.cs" />
+    <Compile Include="Crud\LectureCrud.cs" />
     <Compile Include="Crud\MembersCrud.cs" />
     <Compile Include="Crud\UserCrud.cs" />
     <Compile Include="Mapping\LectureMap.cs" />

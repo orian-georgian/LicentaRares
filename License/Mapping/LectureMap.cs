@@ -12,6 +12,7 @@ namespace License.Mapping
             Map(x => x.Name);
             Map(x => x.Line);
             Map(x => x.Laboratory);
+            Map(x => x.Year);
             References<Member>(x => x.Teacher);
         }
     }

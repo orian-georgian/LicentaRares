@@ -29,6 +29,14 @@ namespace License.Crud
                                     .SetResultTransformer(Transformers.AliasToBean(typeof(Member)))
                                     .List<Member>();
 
+                //var members = session.CreateSQLQuery("SELECT * FROM [University].[dbo].[Members] m "
+                //    +"JOIN [University].[dbo].[MembersProjects] mp on m.Id = mp.Member_id "
+                //    +"JOIN  [University].[dbo].[Projects] p on mp.Project_id = p.Id "
+                //    +"JOIN [University].[dbo].[Lectures] l on  m.Id = l.Teacher_id JOIN [University].[dbo].[MembersPublications] mpub on m.Id = mpub.Member_id JOIN [University].[dbo].[Publications] pub on mpub.Publication_id = pub.Id Where Email = :email")
+                //                    .SetParameter("email", email)
+                //                    .SetResultTransformer(Transformers.AliasToBean(typeof(Member)))
+                //                    .List<Member>();
+
                 transaction.Commit();
                 return members.Count == 0 ? null : members[0];
             }

@@ -42,7 +42,7 @@ namespace License.Endpoint
 
                     if (user == null || user.Password != model.Password)
                     {
-                        return Response.AsText("Incorrect username or password!").WithStatusCode(HttpStatusCode.NotFound);
+                        return Response.AsText("Incorrect username or password!").WithStatusCode(HttpStatusCode.Forbidden);
                     }
 
                     var token = AuthToken.SetToken();
