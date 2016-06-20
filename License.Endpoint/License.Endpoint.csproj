@@ -63,12 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactModule.cs" />
     <Compile Include="LectureModule.cs" />
     <Compile Include="LoginModule.cs" />
     <Compile Include="RequestBodyExtensions.cs" />
     <Compile Include="MemberModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmtpService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

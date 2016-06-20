@@ -11,15 +11,25 @@ namespace License
         {
             try
             {
+                var fromAddress = "marincas.andreea.maria@gmail.com";
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
 
-                mail.From = new MailAddress("marincas.andreea.maria@gmail.com");
-                mail.To.Add(toAddress);
+                mail.From = new MailAddress(fromAddress);
+
+                if (toAddress == "")
+                {
+                    mail.To.Add(fromAddress);
+                }
+                else
+                {
+                    mail.To.Add(toAddress);
+                }
+
                 mail.Subject = mailSubject;
                 mail.Body = mailBody;
 
-                NetworkCredential login = new NetworkCredential("marincas.andreea.maria@gmail.com", "mam~1992");
+                NetworkCredential login = new NetworkCredential(fromAddress, "mam~1992");
                 SmtpServer.UseDefaultCredentials = false;
                 SmtpServer.Credentials = login;
                 SmtpServer.EnableSsl = true;
