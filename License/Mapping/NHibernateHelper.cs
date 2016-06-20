@@ -14,7 +14,7 @@ namespace License.Mapping
         public static ISession OpenSession()
         {
             ISessionFactory sessionFactory = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2012
+                .Database(MsSqlConfiguration.MsSql2012.ShowSql()
                   .ConnectionString(@"Data Source=ANDREEA-PC;Initial Catalog=University;Integrated Security=True")
                               .ShowSql()
                 )

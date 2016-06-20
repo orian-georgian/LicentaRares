@@ -145,6 +145,7 @@ namespace License.Endpoint
             foreach (var lecture in lectures)
             {
                 lecture.Teacher = member;
+                lecture.Id = 0;
                 LectureCrud.Save(lecture, session);
             }
         }
