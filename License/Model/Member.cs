@@ -10,6 +10,7 @@ namespace License.Model
         public virtual string MemberFunction { get; set; }
         public virtual string PersonalPage { get; set; }
         public virtual string Email { get; set; }
+        public virtual byte[] MemberPhoto { get; set; }
         public virtual IList<Lecture> Lectures { get; set; }
         public virtual IList<Project> Projects { get; set; }
         public virtual IList<Publication> Publications { get; set; }
