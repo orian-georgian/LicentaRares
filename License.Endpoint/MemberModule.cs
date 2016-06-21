@@ -119,6 +119,24 @@ namespace License.Endpoint
 
                     return HttpStatusCode.Unauthorized;
                 };
+
+            Post["/member/photo"] = parameters =>
+            {
+                var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
+
+                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                {
+                    var content = Request.Body.ReadAsString();
+
+                    var model = JsonConvert.DeserializeObject<PhotoModel>(content);
+
+
+
+                    return HttpStatusCode.Accepted;
+                }
+
+                return HttpStatusCode.Unauthorized;
+            };
         }
 
         private static void SaveOrUpdateMember(Member member, ISession session)
@@ -153,5 +171,11 @@ namespace License.Endpoint
                 LectureCrud.Save(lecture, session);
             }
         }
+    }
+
+    public class PhotoModel
+    {
+        public Member Member;
+        public HttpFile File;
     }
 }
