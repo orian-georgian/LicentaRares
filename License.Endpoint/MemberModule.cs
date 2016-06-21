@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.IO;
 using System.Windows;
@@ -130,7 +131,7 @@ namespace License.Endpoint
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
                 if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
-                {                
+                {
                     if (!Directory.Exists(StoragePath))
                     {
                         Directory.CreateDirectory(StoragePath);
@@ -151,16 +152,15 @@ namespace License.Endpoint
                     {
                         File.Delete(Path.Combine(StoragePath, member.MemberPhoto));
                     }
-
                     member.MemberPhoto = fileName;
                     MembersCrud.Save(member, Session);
-                    
+
                     return HttpStatusCode.Accepted;
                 }
-
                 return HttpStatusCode.Unauthorized;
             };
         }
+            
 
         private static void SaveOrUpdateMember(Member member, ISession session)
         {
@@ -194,11 +194,5 @@ namespace License.Endpoint
                 LectureCrud.Save(lecture, session);
             }
         }
-    }
-
-    public class PhotoModel
-    {
-        public Member Member;
-        public HttpFile File;
     }
 }

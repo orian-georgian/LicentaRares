@@ -42,4 +42,3 @@ E:\SoftSolutions\License\License\bin\Debug\NHibernate.xml
 E:\SoftSolutions\License\License\bin\Debug\System.Collections.Immutable.xml
 E:\SoftSolutions\License\License\obj\Debug\License.exe
 E:\SoftSolutions\License\License\obj\Debug\License.pdb
-E:\SoftSolutions\License\License\obj\Debug\License.Context.csprojResolveAssemblyReference.cache
