@@ -1,23 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.IO;
+using System.Windows;
 using License.Crud;
 using License.Mapping;
 using License.Model;
 using Nancy;
 using Newtonsoft.Json;
 using NHibernate;
+using System.Reflection;
+using System.Configuration;
 
 namespace License.Endpoint
 {
     public class MemberModule : NancyModule
     {
-        private ISession session;
+        private ISession Session;
+        private string StoragePath = ConfigurationManager.AppSettings["FilePath"].ToString();
 
         public MemberModule()
             : base("/member")
         {
-            this.session = NHibernateHelper.OpenSession();
+            this.Session = NHibernateHelper.OpenSession();
 
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
                .WithHeader("Access-Control-Allow-Methods", "POST,GET")
@@ -29,9 +34,9 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
                     {
-                        var members = MembersCrud.ListAll(session).ToImmutableArray();
+                        var members = MembersCrud.ListAll(Session).ToImmutableArray();
 
                         return members.Length == 0 ? null : JsonConvert.SerializeObject(members, Formatting.Indented, new JsonSerializerSettings()
                         {
@@ -46,11 +51,11 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
                     {
                         var email = (string)this.Request.Query.Email;
 
-                        var member = MembersCrud.Get(email, session);
+                        var member = MembersCrud.Get(email, Session);
 
                         return JsonConvert.SerializeObject(member, Formatting.Indented, new JsonSerializerSettings()
                         {
@@ -65,15 +70,15 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
                     {
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
-                        SaveOrUpdateMember(member, session);
+                        SaveOrUpdateMember(member, Session);
 
                         var user = AuthentificationLogic.CreateUser(member);
-                        UserCrud.Save(user, session);
+                        UserCrud.Save(user, Session);
 
                         AuthentificationLogic.SendNotificationEmail(user);
 
@@ -87,13 +92,13 @@ namespace License.Endpoint
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
                 {
                     string content = Request.Body.ReadAsString();
 
                     var member = JsonConvert.DeserializeObject<Member>(content);
 
-                    SaveOrUpdateMember(member, session);
+                    SaveOrUpdateMember(member, Session);
 
                     return HttpStatusCode.Accepted;
                 }
@@ -105,14 +110,14 @@ namespace License.Endpoint
                 {
                     var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
+                    if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
                     {
 
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
 
-                        MembersCrud.Delete(member, session);
+                        MembersCrud.Delete(member, Session);
 
                         return HttpStatusCode.Accepted;
                     }
@@ -120,18 +125,36 @@ namespace License.Endpoint
                     return HttpStatusCode.Unauthorized;
                 };
 
-            Post["/member/photo"] = parameters =>
+            Post["/photo"] = parameters =>
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
-                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
-                {
-                    var content = Request.Body.ReadAsString();
+                if (token == "null" || (token != "null" && AuthToken.CheckToken(token, Session)))
+                {                
+                    if (!Directory.Exists(StoragePath))
+                    {
+                        Directory.CreateDirectory(StoragePath);
+                    }
 
-                    var model = JsonConvert.DeserializeObject<PhotoModel>(content);
+                    var fileName = Request.Files.First().Name;
+                    var filePath = Path.Combine(StoragePath, fileName);
 
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        Request.Files.First().Value.CopyTo(fileStream);
+                    }
 
+                    var user = AuthToken.FindToken(token, Session);
+                    var member = MembersCrud.Get(user.Email, Session);
 
+                    if (!string.IsNullOrEmpty(member.MemberPhoto))
+                    {
+                        File.Delete(Path.Combine(StoragePath, member.MemberPhoto));
+                    }
+
+                    member.MemberPhoto = fileName;
+                    MembersCrud.Save(member, Session);
+                    
                     return HttpStatusCode.Accepted;
                 }
 

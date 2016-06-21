@@ -15,7 +15,7 @@ namespace License.Mapping
         {
             ISessionFactory sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012.ShowSql()
-                  .ConnectionString(@"Data Source=ANDREEA-PC;Initial Catalog=University;Integrated Security=True")
+                  .ConnectionString(@"Data Source=Gicutzu;Initial Catalog=University;Integrated Security=True")
                               .ShowSql()
                 )
                .Mappings(m =>
