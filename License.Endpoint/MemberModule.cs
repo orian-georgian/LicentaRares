@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using License.Crud;
 using License.Mapping;
@@ -120,17 +121,26 @@ namespace License.Endpoint
                     return HttpStatusCode.Unauthorized;
                 };
 
-            Post["/member/photo"] = parameters =>
+            Post["/photo/{Id}"] = parameters =>
             {
                 var token = this.Request.Headers["X-User-Token"].FirstOrDefault().ToString();
 
                 if (token == "null" || (token != "null" && AuthToken.CheckToken(token, session)))
                 {
-                    var content = Request.Body.ReadAsString();
+                    var image = Request.Files.First();
 
-                    var model = JsonConvert.DeserializeObject<PhotoModel>(content);
+                    var memberId = (int)parameters.Id;
 
+                    var member = MembersCrud.Get(memberId, session);
 
+                    byte[] fileData = null;
+                    using (var binaryReader = new BinaryReader(image.Value))
+                    {
+                        fileData = binaryReader.ReadBytes(int.MaxValue);
+                        member.MemberPhoto = fileData;
+                    }
+
+                    MembersCrud.Save(member, session);
 
                     return HttpStatusCode.Accepted;
                 }
@@ -171,11 +181,5 @@ namespace License.Endpoint
                 LectureCrud.Save(lecture, session);
             }
         }
-    }
-
-    public class PhotoModel
-    {
-        public Member Member;
-        public HttpFile File;
     }
 }

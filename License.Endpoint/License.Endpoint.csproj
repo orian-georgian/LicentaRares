@@ -66,6 +66,7 @@
     <Compile Include="ContactModule.cs" />
     <Compile Include="LectureModule.cs" />
     <Compile Include="LoginModule.cs" />
+    <Compile Include="PublicationModule.cs" />
     <Compile Include="RequestBodyExtensions.cs" />
     <Compile Include="MemberModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
