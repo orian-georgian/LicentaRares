@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.IO;
-using System.Windows;
 using License.Crud;
 using License.Mapping;
 using License.Model;
 using Nancy;
 using Newtonsoft.Json;
 using NHibernate;
-using System.Reflection;
-using System.Configuration;
 
 namespace License.Endpoint
 {
@@ -76,7 +72,7 @@ namespace License.Endpoint
                         string content = Request.Body.ReadAsString();
 
                         var member = JsonConvert.DeserializeObject<Member>(content);
-                        SaveOrUpdateMember(member, Session);
+                        MembersCrud.Save(member, Session);
 
                         var user = AuthentificationLogic.CreateUser(member);
                         UserCrud.Save(user, Session);
@@ -99,7 +95,7 @@ namespace License.Endpoint
 
                     var member = JsonConvert.DeserializeObject<Member>(content);
 
-                    SaveOrUpdateMember(member, Session);
+                    MembersCrud.Save(member, Session);
 
                     return HttpStatusCode.Accepted;
                 }
@@ -159,40 +155,6 @@ namespace License.Endpoint
                 }
                 return HttpStatusCode.Unauthorized;
             };
-        }
-            
-
-        private static void SaveOrUpdateMember(Member member, ISession session)
-        {
-            var lectures = member.Lectures;
-            member.Lectures = null;
-
-            MembersCrud.Save(member, session);
-
-            if (lectures.Count > 0)
-            {
-                SaveLectures(lectures, member, session);
-            }
-        }
-
-        private static void SaveLectures(IList<Lecture> lectures, Member member, ISession session)
-        {
-            var dbLectures = LectureCrud.GetAll(session).ToImmutableArray();
-
-            foreach (var lecture in dbLectures)
-            {
-                if (lecture.Teacher.Id == member.Id)
-                {
-                    LectureCrud.Delete(lecture, session);
-                }
-            }
-
-            foreach (var lecture in lectures)
-            {
-                lecture.Teacher = member;
-                lecture.Id = 0;
-                LectureCrud.Save(lecture, session);
-            }
         }
     }
 }

@@ -26,7 +26,6 @@ E:\Documents\ProjectX\LicentaRares\License\bin\Debug\NHibernate.xml
 E:\Documents\ProjectX\LicentaRares\License\bin\Debug\System.Collections.Immutable.xml
 E:\Documents\ProjectX\LicentaRares\License\bin\Debug\Newtonsoft.Json.dll
 E:\Documents\ProjectX\LicentaRares\License\bin\Debug\Newtonsoft.Json.xml
-E:\Documents\ProjectX\LicentaRares\License\obj\Debug\License.Context.csprojResolveAssemblyReference.cache
 E:\SoftSolutions\License\License\bin\Debug\License.exe
 E:\SoftSolutions\License\License\bin\Debug\License.pdb
 E:\SoftSolutions\License\License\bin\Debug\FluentNHibernate.dll

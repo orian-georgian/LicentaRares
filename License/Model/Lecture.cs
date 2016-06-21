@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace License.Model
 {
     public class Lecture
@@ -8,11 +9,11 @@ namespace License.Model
         public virtual string Line { get; set; }
         public virtual string Laboratory { get; set; }
         public virtual string Year { get; set; }
-        public virtual Member Teacher { get; set; }
+        public virtual IList<Member> Teachers { get; set; }
 
         public Lecture()
         {
-            Teacher = new Member();
+            Teachers = new List<Member>();
         }
     }
 }

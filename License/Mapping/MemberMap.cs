@@ -15,7 +15,9 @@ namespace License.Mapping
             Map(x => x.PersonalPage);
             Map(x => x.Email);
             Map(x => x.MemberPhoto);
-            HasMany<Lecture>(x => x.Lectures).Inverse().Cascade.SaveUpdate();
+            HasManyToMany<Lecture>(x => x.Lectures)
+                .Cascade.All()
+                .Table("MembersLectures");
             HasManyToMany<Project>(x => x.Projects)
                 .Cascade.All()
                 .Table("MembersProjects");
